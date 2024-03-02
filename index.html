@@ -7,6 +7,7 @@
     <style>
         body{
             padding: 50px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
         }
         .mark-row{
             display: flex;
@@ -21,6 +22,17 @@
         }
         .result-sheet{
             width: 600px;
+            border: 1px solid black;
+            border-radius: 20px;
+            padding: 20px;
+            background-color: rgba(250, 235, 215, 0.468);
+        }
+        #average-container{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+            margin-right: 260px;
         }
     </style>
 </head>
@@ -33,14 +45,18 @@
     <div id="mark-row-container">
         <div class="mark-row">
             <input type="text" name="" id="" placeholder="Subject">
-            <input type="number" name="" id="" placeholder="Mark">
-            <p>A</p>
+            <input type="number" name="" class="markInp" placeholder="Mark" onchange="updateGrade(this)">
+            <p>N/A</p>
         </div>
         <div class="mark-row">
             <input type="text" name="" id="" placeholder="Subject">
-            <input type="number" name="" id="" placeholder="Mark">
-            <p>A</p>
+            <input type="number" name="" class="markInp"  placeholder="Mark" onchange="updateGrade(this)">
+            <p>N/A</p>
         </div>
+    </div>
+    <div id="average-container">
+        <button onclick="calAvg()">Calculate Average</button>
+        <p id="avgText">0</p>
     </div>
 </div>
 
@@ -57,15 +73,50 @@
         let markInput = document.createElement("input");
         markInput.placeholder="Mark"
         markInput.type="number"
+        markInput.class="markInp"
+        markInput.addEventListener("change",function(){
+            updateGrade(this);
+        });
 
         let grade = document.createElement("p");
-        grade.innerText="A"
+        grade.innerText="N/A"
         markRow.appendChild(subjectInput);
         markRow.appendChild(markInput);
         markRow.appendChild(grade);
 
         let markRowContainer=document.getElementById("mark-row-container")
         markRowContainer.appendChild(markRow)
+    };
+
+    function updateGrade(input){
+        let mark = input.value;
+        let grade= input.parentElement.querySelector("p");
+        if (mark>=80){
+            grade.innerText="A"
+        }else if(mark>=60){
+            grade.innerText="B"
+        }else if(mark>=50){
+            grade.innerText="C"
+        }else if(mark>=40){
+            grade.innerText="S"
+        }else{
+            grade.innerText="F"
+        }
+    };
+
+    function calAvg(){
+        let sum=0
+    let avg=0
+        let markmarksInputs=[]
+        marksInputs=document.querySelectorAll(
+            ".mark-row input[type='number']"
+        )
+        marksInputs.forEach(function(input){
+            sum+=parseInt(input.value)
+        })
+        avg=sum/marksInputs.length 
+        avgText=document.getElementById("avgText")
+        avgText.innerText=avg
     }
 </script>
 </body>
